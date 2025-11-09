@@ -110,10 +110,10 @@ static void avx512_i32_sub()
 	printf("b: ");
 	print_array(std::span{b, 16});
 
-	auto vec_a = _mm512_load_si512((__m256i *)a);
-	auto vec_b = _mm512_load_si512((__m256i *)b);
+	auto vec_a = _mm512_load_si512((__m512i *)a);
+	auto vec_b = _mm512_load_si512((__m512i *)b);
 	auto vec_res = _mm512_sub_epi32(vec_a, vec_b);
-	_mm512_store_si512((__m256i *)c, vec_res);
+	_mm512_store_si512((__m512i *)c, vec_res);
 
 	printf("c: ");
 	print_array(std::span{c, 16});
@@ -123,22 +123,22 @@ static void avx512_i8_sum()
 {
 	using type = i8;
 	puts("Задание 5. i8 C = A + B");
-	type a[32] = "Этот текст из 32 Б.";
-	type b[32] = "This string has just 2^5 bytes.";
-	type c[32] = {};
+	type a[64] = "Этот текст содержит в себе 32 байта.";
+	type b[64] = "emojis🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨.";
+	type c[64] = {};
 
 	printf("a: ");
-	print_array(std::span{a, 32});
+	print_array(std::span{a, 64});
 	printf("b: ");
-	print_array(std::span{b, 32});
+	print_array(std::span{b, 64});
 
-	auto vec_a = _mm256_load_si256((__m256i *)a);
-	auto vec_b = _mm256_load_si256((__m256i *)b);
-	auto vec_res = _mm256_add_epi8(vec_a, vec_b);
-	_mm256_store_si256((__m256i *)c, vec_res);
+	auto vec_a = _mm512_load_si512((__m512i *)a);
+	auto vec_b = _mm512_load_si512((__m512i *)b);
+	auto vec_res = _mm512_add_epi8(vec_a, vec_b);
+	_mm512_store_si512((__m512i *)c, vec_res);
 
 	printf("c: ");
-	print_array(std::span{c, 32});
+	print_array(std::span{c, 64});
 }
 
 static void avx512_u16_sum()
