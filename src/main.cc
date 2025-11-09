@@ -101,8 +101,24 @@ static void avx512_i32_sub()
 {
 	using type = i32;
 	puts("Задание 3. i32 C = A - B");
-	type a[16] = {0, 1, std::numeric_limits<type>::min(), 11, 256, 4, 99, 0, 1, 38, 4, 211, 0, 2, 19, std::numeric_limits<type>::max()};
-	type b[16] = {0, -1, 2, -3, 4, -5, 6, -7, 8, -9, 10, -11, 12, -13, 14, -15};
+	type a[16] = {0,
+		      1,
+		      std::numeric_limits<type>::min(),
+		      11,
+		      256,
+		      4,
+		      99,
+		      0,
+		      1,
+		      38,
+		      4,
+		      211,
+		      0,
+		      2,
+		      19,
+		      std::numeric_limits<type>::max()};
+	type b[16] = {0, -1, 2,	 -3,  4,  -5,  6,  -7,
+		      8, -9, 10, -11, 12, -13, 14, -15};
 	type c[16] = {};
 
 	printf("a: ");
@@ -123,7 +139,7 @@ static void avx512_i8_sum()
 {
 	using type = i8;
 	puts("Задание 5. i8 C = A + B");
-	type a[64] = "Этот текст содержит в себе 32 байта.";
+	type a[64] = "Этот текст содержит в себе 64 байта.";
 	type b[64] = "emojis🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨🤨.";
 	type c[64] = {};
 
@@ -145,29 +161,36 @@ static void avx512_u16_sum()
 {
 	using type = u16;
 	puts("Задание 4. u16 C = A + B");
-	type a[16] = {0,   1,	std::numeric_limits<type>::max(),
-		      11,  220, 4,
-		      99,  1,	12,
-		      177, 11,	12,
-		      13,  14,	88};
-	type b[16] = {1,  38,  4,   125,
-		      0,  2,   19,  std::numeric_limits<type>::max(),
-		      99, 100, 111, 112,
-		      26, 128, 66};
-	type c[16] = {};
+	type a[32] = {0,   1,	 std::numeric_limits<type>::max(),
+		      11,  220,	 4,
+		      99,  1,	 12,
+		      177, 11,	 31,
+		      322, 231,	 14,
+		      55,  66,	 77,
+		      0,   1,	 2,
+		      3,   4,	 5,
+		      6,   7,	 8,
+		      9,   1812, 13,
+		      14,  88};
+	type b[32] = {
+		1,  38,	 4,   125, 0,  2,  19, std::numeric_limits<type>::max(),
+		99, 100, 111, 112, 22, 1,  11, 23,
+		66, 1,	 4,   7,   18, 88, 26, 128,
+		66, 77,	 66,  55,  44, 33, 22, 11};
+	type c[32] = {};
 
 	printf("a: ");
-	print_array(std::span{a, 16});
+	print_array(std::span{a, 32});
 	printf("b: ");
-	print_array(std::span{b, 16});
+	print_array(std::span{b, 32});
 
-	auto vec_a = _mm256_load_si256((__m256i *)a);
-	auto vec_b = _mm256_load_si256((__m256i *)b);
-	auto vec_res = _mm256_adds_epu8(vec_a, vec_b);
-	_mm256_store_si256((__m256i *)c, vec_res);
+	auto vec_a = _mm512_load_si512((__m512i *)a);
+	auto vec_b = _mm512_load_si512((__m512i *)b);
+	auto vec_res = _mm512_adds_epu16(vec_a, vec_b);
+	_mm512_store_si512((__m512i *)c, vec_res);
 
 	printf("c: ");
-	print_array(std::span{c, 16});
+	print_array(std::span{c, 32});
 }
 
 int main()
