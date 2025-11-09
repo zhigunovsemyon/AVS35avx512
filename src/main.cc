@@ -101,22 +101,22 @@ static void avx512_i32_sub()
 {
 	using type = i32;
 	puts("Задание 3. i32 C = A - B");
-	type a[8] = {0, 1, std::numeric_limits<type>::min(), 11, 256, 4, 99, 0};
-	type b[8] = {1, 38, 4, 211, 0, 2, 19, std::numeric_limits<type>::max()};
-	type c[8] = {};
+	type a[16] = {0, 1, std::numeric_limits<type>::min(), 11, 256, 4, 99, 0, 1, 38, 4, 211, 0, 2, 19, std::numeric_limits<type>::max()};
+	type b[16] = {0, -1, 2, -3, 4, -5, 6, -7, 8, -9, 10, -11, 12, -13, 14, -15};
+	type c[16] = {};
 
 	printf("a: ");
-	print_array(std::span{a, 8});
+	print_array(std::span{a, 16});
 	printf("b: ");
-	print_array(std::span{b, 8});
+	print_array(std::span{b, 16});
 
-	auto vec_a = _mm256_load_si256((__m256i *)a);
-	auto vec_b = _mm256_load_si256((__m256i *)b);
-	auto vec_res = _mm256_sub_epi32(vec_a, vec_b);
-	_mm256_store_si256((__m256i *)c, vec_res);
+	auto vec_a = _mm512_load_si512((__m256i *)a);
+	auto vec_b = _mm512_load_si512((__m256i *)b);
+	auto vec_res = _mm512_sub_epi32(vec_a, vec_b);
+	_mm512_store_si512((__m256i *)c, vec_res);
 
 	printf("c: ");
-	print_array(std::span{c, 8});
+	print_array(std::span{c, 16});
 }
 
 static void avx512_i8_sum()
